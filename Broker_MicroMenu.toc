@@ -1,5 +1,5 @@
-## Interface: 70000
-## Title: Broker: |cff00ff00MicroMenu|r 
+## Interface: 70200
+## Title: Broker: |cff00ff00MicroMenu|r
 ## Version: @project-version@
 ## Notes: Shows the mirco menu and game menu in a clickable broker tooltip.
 ## Author: yess
