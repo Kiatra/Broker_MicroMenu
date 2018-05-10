@@ -276,15 +276,17 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.RaidMicroButton)
 	end
 
+	if _G.StoreMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."raid.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.StoreMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.StoreMicroButton)
+	end
+
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, path.."green.tga", myProvider)
 	tooltip:SetCell(y, 2, _G.MainMenuMicroButton.tooltipText)
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, mainmenu)
-
-	--local y, x = tooltip:AddLine()
-	--tooltip:SetCell(y, 1, path.."help.tga", myProvider)
-	--tooltip:SetCell(y, 2, _G.HelpMicroButton.tooltipText)
-	--tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.HelpMicroButton)
 
 	tooltip:AddSeparator(10,0,0,0,0)
 
