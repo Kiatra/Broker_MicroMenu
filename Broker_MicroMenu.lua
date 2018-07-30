@@ -11,14 +11,14 @@ local path = "Interface\\AddOns\\Broker_MicroMenu\\media\\"
 local _
 
 local function Debug(...)
-	--[===[@debug@
+	--@debug@
 	local s = "Broker_MicroMenu Debug:"
 	for i=1,_G.select("#", ...) do
 		local x = _G.select(i, ...)
 		s = _G.strjoin(" ",s,_G.tostring(x))
 	end
 	_G.DEFAULT_CHAT_FRAME:AddMessage(s)
-	--@end-debug@]===]
+	--@end-debug@
 end
 
 local function RGBToHex(r, g, b)
@@ -34,7 +34,6 @@ dataobj = ldb:NewDataObject("Broker_MicroMenu", {
 	label = "MicroMenu",
 	text  = "",
 	OnClick = function(self, button, ...)
-   Debug("OnClick", self, button, ...)
 		if button == "RightButton" then
 			if _G.IsModifierKeyDown() then
 				mainmenu(self, button, ...)
@@ -156,8 +155,6 @@ local function MouseHandler(event, func, button, ...)
 end
 
 function dataobj:OnEnter()
-  Debug(_G.StoreMicroButton)
-
 	if tooltip then
 		LibQTip:Release(tooltip)
 	end
