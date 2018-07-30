@@ -5,6 +5,7 @@
 ## Author: yess
 ## OptionalDeps: LibQTip-1.0
 ## SavedVariables: Broker_MicroMenuDB
+## X-Curse-Project-ID: 21420
 
 #@no-lib-strip@
 libs\libs.xml
