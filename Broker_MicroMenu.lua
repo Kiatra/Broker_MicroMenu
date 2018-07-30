@@ -11,14 +11,14 @@ local path = "Interface\\AddOns\\Broker_MicroMenu\\media\\"
 local _
 
 local function Debug(...)
-	--@debug@
+	--[===[@debug@
 	local s = "Broker_MicroMenu Debug:"
 	for i=1,_G.select("#", ...) do
 		local x = _G.select(i, ...)
 		s = _G.strjoin(" ",s,_G.tostring(x))
 	end
 	_G.DEFAULT_CHAT_FRAME:AddMessage(s)
-	--@end-debug@
+	--@end-debug@]===]
 end
 
 local function RGBToHex(r, g, b)
@@ -85,28 +85,27 @@ end
 
 function dataobj:UpdateText()
 	local fps = floor(GetFramerate())
-	--bandwidthIn, bandwidthOut, latencyHome, latencyWorld
 	local _, _, latencyHome, latencyWorld = GetNetStats()
 
-  local colorGrey = "|cff808080"
+    local colorGood = "|cff808080"
 	local fpsColor, colorHome, colorWorld = "", "", ""
 	if not db.disableColoring then
 		if fps > 30 then
-			fpsColor = colorGrey
+			fpsColor = colorGood
 		elseif fps > 20 then
 			fpsColor = "|cffffd200"
 		else
 			fpsColor = "|cffdd3a00"
 		end
 		if latencyHome < 300 then
-			colorHome = colorGrey
+			colorHome = colorGood
 		elseif latencyHome < 500 then
 			colorHome = "|cffffd200"
 		else
 			colorHome = "|cffdd3a00"
 		end
 		if latencyWorld < 300 then
-			colorWorld = colorGrey
+			colorWorld = colorGood
 			dataobj.icon = path.."green.tga"
 		elseif latencyWorld < 500 then
 			colorWorld = "|cffffd200"
@@ -169,12 +168,16 @@ function dataobj:OnEnter()
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, "", myProvider, {0.2, 0.8, 0.2, 0.8},"player")
-	tooltip:SetCell(y, 2, _G.CharacterMicroButton.tooltipText)
+	local ckey = _G.GetBindingKey("TOGGLECHARACTER0")
+	if ckey then
+		tooltip:SetCell(y, 2, _G.CHARACTER_BUTTON.."|cffffd200 ("..ckey..")")
+	else
+		tooltip:SetCell(y, 2, _G.CHARACTER_BUTTON)
+	end
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.ToggleCharacter("PaperDollFrame") end)
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, path.."spells.tga", myProvider)
-	--tooltip:SetCell(y, 2, "Spellbook & Abilities |cffffd200(P)|r")
 	local key = _G.GetBindingKey("TOGGLESPELLBOOK")
 	if key then
 		tooltip:SetCell(y, 2, _G.SPELLBOOK_ABILITIES_BUTTON.."|cffffd200 ("..key..")")
@@ -190,23 +193,13 @@ function dataobj:OnEnter()
 				_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Spellbook during combat. Set and use a hot key.")
 			end
 		else
-			--SpellbookMicroButton:GetScript("OnClick")(SpellbookMicroButton,button, ...)
 			_G.ToggleSpellBook(_G.BOOKTYPE_SPELL)
-			--[[
-			if  SpellBookFrame:IsShown() then
-				SpellBookFrame:Hide()
-			else
-				tinsert(UISpecialFrames,SpellBookFrame:GetName());
-				SpellBookFrame:Show()
-			end
-			--]]
 		end
 	end)
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, path.."talents.tga", myProvider)
 	tooltip:SetCell(y, 2, _G.TalentMicroButton.tooltipText)
-	--tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, TalentMicroButton)
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function(self, func, button, ...)
 		if _G.InCombatLockdown() then
 			key = _G.GetBindingKey("TOGGLETALENTS")
@@ -217,7 +210,6 @@ function dataobj:OnEnter()
 			end
 		else
 			_G.LoadAddOn("Blizzard_TalentUI")
-			--TalentMicroButton:GetScript("OnClick")(TalentMicroButton,button, ...)
 			if  _G.PlayerTalentFrame:IsShown() then
 				_G.PlayerTalentFrame:Hide()
 			else
@@ -238,22 +230,9 @@ function dataobj:OnEnter()
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
 
 	local y, x = tooltip:AddLine()
-	--tooltip:SetCell(y, 1, path.."social.tga", myProvider)
 	tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
 	tooltip:SetCell(y, 2, _G.GuildMicroButton.tooltipText)
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GuildMicroButton)
-
-	--[[
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."pvp.tga", myProvider)
-	tooltip:SetCell(y, 2, "PvP")
-	--tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() ToggleFrame(PVPParentFrame) end)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function()
-		if TogglePVPUI then
-			TogglePVPUI()
-		end
-	end)
-	]]
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, path.."lfg.tga", myProvider)
@@ -263,7 +242,12 @@ function dataobj:OnEnter()
 	if _G.CollectionsMicroButton then
 		local y, x = tooltip:AddLine()
 		tooltip:SetCell(y, 1, path.."mounts.tga", myProvider)
-		tooltip:SetCell(y, 2, _G.CollectionsMicroButton.tooltipText)
+		local clkey = _G.GetBindingKey("TOGGLECOLLECTIONS")
+		if clkey then
+			tooltip:SetCell(y, 2, _G.COLLECTIONS.."|cffffd200 ("..clkey..")")
+		else
+			tooltip:SetCell(y, 2, _G.COLLECTIONS)
+		end
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.CollectionsMicroButton)
 	end
 
@@ -282,7 +266,7 @@ function dataobj:OnEnter()
 
 	if _G.StoreMicroButton then
 		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 1, "", myProvider)
+		tooltip:SetCell(y, 1, path.."store.tga", myProvider)
 		tooltip:SetCell(y, 2, _G.StoreMicroButton.tooltipText)
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.StoreMicroButton)
 	end
