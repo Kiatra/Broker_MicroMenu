@@ -16,7 +16,7 @@ if L then
 	L["Show latency for combat data, data from the people around you (specs, gear, enchants, etc.)."] = true
 	L["Show Home Latency"] = true
 	L["Show latency for chat data, auction house stuff some addon data, and various other data."] = true
-	L["Disable Coloring"] = true
+	L["Enable Coloring"] = true
 	L["General"] = true
 	L["ms"] = true
 	L["fps"] = true

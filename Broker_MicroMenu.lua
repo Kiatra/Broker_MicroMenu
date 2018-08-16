@@ -86,9 +86,9 @@ function dataobj:UpdateText()
 	local fps = floor(GetFramerate())
 	local _, _, latencyHome, latencyWorld = GetNetStats()
 
-    local colorGood = "|cff808080"
+    local colorGood = "|cff00ff00"
 	local fpsColor, colorHome, colorWorld = "", "", ""
-	if not db.disableColoring then
+	if db.enableColoring then
 		if fps > 30 then
 			fpsColor = colorGood
 		elseif fps > 20 then
