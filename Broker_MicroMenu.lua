@@ -7,12 +7,15 @@ local _G, floor, string, GetNetStats, GetFramerate  = _G, floor, string, GetNetS
 local delay, counter = 1,0
 local dataobj, tooltip, db
 local color = true
-local path = "Interface\\AddOns\\Broker_MicroMenu\\media\\"
 local _
+local addonName = Broker_MicroMenuEmbeddedName or "Broker_MicroMenu"
+local path = Broker_MicroMenuEmbeddedPath or "Interface\\AddOns\\Broker_MicroMenu\\media\\"
+
+local ChocolateBar = LibStub("AceAddon-3.0"):GetAddon("ChocolateBar", true)
 
 local function Debug(...)
 	--@debug@
-	local s = "Broker_MicroMenu Debug:"
+	local s = addonName.." Debug:"
 	for i=1,_G.select("#", ...) do
 		local x = _G.select(i, ...)
 		s = _G.strjoin(" ",s,_G.tostring(x))
@@ -28,7 +31,7 @@ end
 local mb = _G.MainMenuMicroButton:GetScript("OnMouseUp")
 local function mainmenu(self, ...) self.down = 1; mb(self, ...) end
 
-dataobj = ldb:NewDataObject("Broker_MicroMenu", {
+dataobj = ldb:NewDataObject(addonName, {
 	type = "data source",
 	icon = path.."green.tga",
 	label = "MicroMenu",
@@ -159,7 +162,7 @@ function dataobj:OnEnter()
 		LibQTip:Release(tooltip)
 	end
 
-	tooltip = LibQTip:Acquire("Broker_MicroMenuTooltip", 2, "LEFT", "LEFT")
+	tooltip = LibQTip:Acquire(addonName.."Tooltip", 2, "LEFT", "LEFT")
 	tooltip:Clear()
 	self.tooltip = tooltip
 

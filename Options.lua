@@ -1,14 +1,18 @@
 local LibStub = LibStub
-local Broker_MicroMenu = LibStub:GetLibrary("LibDataBroker-1.1",true):GetDataObjectByName("Broker_MicroMenu")
-local version = GetAddOnMetadata("Broker_MicroMenu","X-Curse-Packaged-Version") or ""
+local addonName = "Broker_MicroMenu"
+local addonName = Broker_MicroMenuEmbeddedName or "Broker_MicroMenu"
 local L = LibStub("AceLocale-3.0"):GetLocale("Broker_MicroMenu")
+local Broker_MicroMenu = LibStub:GetLibrary("LibDataBroker-1.1",true):GetDataObjectByName(addonName)
+local version = GetAddOnMetadata("Broker_MicroMenu","X-Curse-Packaged-Version") or ""
 local db
 
+
+
 local aceoptions = { 
-    name = "Broker MicroMenu".." "..version,
+    name = addonName.." "..version,
     handler = DungeonHelper,
 	type='group',
-	desc = "Broker MicroMenu",
+	desc = addonName,
 	childGroups = "tab",
     args = {
 		general = {
@@ -147,14 +151,14 @@ function Broker_MicroMenu:RegisterOptions()
 		}
 	}
 
-	db = LibStub("AceDB-3.0"):New("Broker_MicroMenuDB", defaults, "Default")
+	db = LibStub("AceDB-3.0"):New(addonName.."DB", defaults, "Default")
 	db = db.profile
 	Broker_MicroMenu:SetDB(db)	
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("Broker_MicroMenu", aceoptions)
-	LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Broker_MicroMenu", "Broker MicroMenu")
+	LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, aceoptions)
+	LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, addonName)
 	--aceoptions.args.profile = LibStub("AceDBOptions-3.0"):GetOptionsTable(db)
 end
 
 function Broker_MicroMenu:OpenOptions()
-	LibStub("AceConfigDialog-3.0"):Open("Broker_MicroMenu")
+	LibStub("AceConfigDialog-3.0"):Open(addonName)
 end
