@@ -127,10 +127,10 @@ function dataobj:UpdateText()
 	else
 		local text = ""
 		if db.showWorldLatency then
-			text = string.format("%s%i|r %s ", colorWorld, latencyWorld, L["ms"])
+			text = string.format("%s%i|r %s ", colorWorld, latencyWorld, _G.MILLISECONDS_ABBR)
 		end
 		if db.showHomeLatency then
-			text = string.format("%s%s%i|r %s ", text, colorHome, latencyHome, L["ms"])
+			text = string.format("%s%s%i|r %s ", text, colorHome, latencyHome, _G.MILLISECONDS_ABBR)
 		end
 		if db.showFPS then
 			if db.fpsFirst then
@@ -278,27 +278,20 @@ function dataobj:OnEnter()
 
 	tooltip:AddSeparator(10,0,0,0,0)
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, nil, myProvider)
-	tooltip:SetCell(y, 2, _G.GameMenuButtonOptions:GetText())
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.VideoOptionsFrame:Show() end)
-
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 2, "Interface")
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.InterfaceOptionsFrame:Show() end)
-
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 2, _G.GameMenuButtonKeybindings:GetText())
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.KeyBindingFrame_LoadUI(); _G.KeyBindingFrame:Show() end)
-
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 2, _G.GameMenuButtonMacros:GetText())
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.ShowMacroFrame)
-
-	if _G.GameMenuButtonAddons then
-		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 2, _G.GameMenuButtonAddons:GetText())
-		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GameMenuButtonAddons)
+	-- Adding Buttons of Main Game Menu
+	local GameMenuButtons = {
+		_G.GameMenuButtonWhatsNew,
+		_G.GameMenuButtonSettings,
+		_G.GameMenuButtonEditMode,
+		_G.GameMenuButtonMacros,
+		_G.GameMenuButtonAddons,
+	}
+	for _, MenuButton in pairs(GameMenuButtons) do
+		if MenuButton then
+			local y, x = tooltip:AddLine()
+			tooltip:SetCell(y, 2, MenuButton:GetText())
+			tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() MenuButton:Click() end)
+		end
 	end
 
 	tooltip:SetAutoHideDelay(0.01, self)
