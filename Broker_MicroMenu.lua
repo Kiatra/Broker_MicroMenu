@@ -220,14 +220,18 @@ function dataobj:OnEnter()
 	end)
 
 	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."achivements.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.AchievementMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.AchievementMicroButton)
+	if AchievementMicroButton then
+		tooltip:SetCell(y, 1, path.."achivements.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.AchievementMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.AchievementMicroButton)
+	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."quest.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.QuestLogMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
+	if QuestLogMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."quest.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.QuestLogMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
+	end
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
@@ -280,16 +284,23 @@ function dataobj:OnEnter()
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 1, nil, myProvider)
-	tooltip:SetCell(y, 2, _G.GameMenuButtonOptions:GetText())
+	if _G.GameMenuButtonOptions then
+		tooltip:SetCell(y, 2, _G.GameMenuButtonOptions:GetText())
+	end
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.VideoOptionsFrame:Show() end)
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 2, "Interface")
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.InterfaceOptionsFrame:Show() end)
+  if _G.InterfaceOptionsFrame then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 2, "Interface")
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.InterfaceOptionsFrame:Show() end)
+	end
 
 	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 2, _G.GameMenuButtonKeybindings:GetText())
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.KeyBindingFrame_LoadUI(); _G.KeyBindingFrame:Show() end)
+
+	if _G._G.GameMenuButtonKeybindings then
+		tooltip:SetCell(y, 2, _G.GameMenuButtonKeybindings:GetText())
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.KeyBindingFrame_LoadUI(); _G.KeyBindingFrame:Show() end)
+  end
 
 	local y, x = tooltip:AddLine()
 	tooltip:SetCell(y, 2, _G.GameMenuButtonMacros:GetText())

@@ -1,4 +1,4 @@
-## Interface: 80200
+## Interface: 100002
 ## Title: Broker: |cff00ff00MicroMenu|r
 ## Version: @project-version@
 ## Notes: Shows the mirco menu and game menu in a clickable broker tooltip.
