@@ -1,8 +1,12 @@
-## Interface: 100002
+## Interface: @toc-version-retail@
+## Interface-Retail: @toc-version-retail@
+## Interface-Classic: @toc-version-classic@
+## Interface-BCC: @toc-version-bcc@
+## Interface-Wrath: @toc-version-wrath@
 ## Title: Broker: |cff00ff00MicroMenu|r
 ## Version: @project-version@
 ## Notes: Shows the micro menu and game menu in a clickable broker tooltip.
-## Author: yess
+## Author: github.com/Kiatra
 ## OptionalDeps: LibQTip-1.0
 ## SavedVariables: Broker_MicroMenuDB
 ## X-Curse-Project-ID: 21420
