@@ -1,7 +1,7 @@
 ## Interface: 100002
 ## Title: Broker: |cff00ff00MicroMenu|r
 ## Version: @project-version@
-## Notes: Shows the mirco menu and game menu in a clickable broker tooltip.
+## Notes: Shows the micro menu and game menu in a clickable broker tooltip.
 ## Author: yess
 ## OptionalDeps: LibQTip-1.0
 ## SavedVariables: Broker_MicroMenuDB
