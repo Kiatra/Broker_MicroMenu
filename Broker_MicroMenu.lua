@@ -233,15 +233,19 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
 	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
-	tooltip:SetCell(y, 2, _G.GuildMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GuildMicroButton)
+	if _G.GuildMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
+		tooltip:SetCell(y, 2, _G.GuildMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GuildMicroButton)
+	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."lfg.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.LFDMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.LFDMicroButton)
+	if _G.LFDMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."lfg.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.LFDMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.LFDMicroButton)
+	end
 
 	if _G.CollectionsMicroButton then
 		local y, x = tooltip:AddLine()
