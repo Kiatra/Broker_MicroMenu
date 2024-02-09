@@ -233,15 +233,19 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
 	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
-	tooltip:SetCell(y, 2, _G.GuildMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GuildMicroButton)
+	if _G.GuildMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
+		tooltip:SetCell(y, 2, _G.GuildMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.GuildMicroButton)
+	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."lfg.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.LFDMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.LFDMicroButton)
+	if _G.LFDMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."lfg.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.LFDMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.LFDMicroButton)
+	end
 
 	if _G.CollectionsMicroButton then
 		local y, x = tooltip:AddLine()
@@ -315,6 +319,12 @@ local function OnUpdate(self, elapsed)
 	end
 end
 
+local function OnDragStart(self, elapsed)
+	if tooltip then
+		LibQTip:Release(tooltip)
+	end
+end
+
 local frame = CreateFrame("Frame")
 local function OnEnterWorld(self)
 	dataobj:RegisterOptions()
@@ -325,3 +335,4 @@ end
 frame:SetScript("OnUpdate", OnUpdate)
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:SetScript("OnEvent", OnEnterWorld)
+
