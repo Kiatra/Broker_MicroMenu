@@ -11,8 +11,6 @@ local _
 local addonName = Broker_MicroMenuEmbeddedName or "Broker_MicroMenu"
 local path = Broker_MicroMenuEmbeddedPath or "Interface\\AddOns\\Broker_MicroMenu\\media\\"
 
-local ChocolateBar = LibStub("AceAddon-3.0"):GetAddon("ChocolateBar", true)
-
 local function Debug(...)
 	--@debug@
 	local s = addonName.." Debug:"
