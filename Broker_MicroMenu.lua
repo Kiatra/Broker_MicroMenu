@@ -202,9 +202,9 @@ function dataobj:OnEnter()
 
 			if _G.InCombatLockdown() then
 				if key then
-					_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Spellbook during combat. Use your hot key: "..key)
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Spellbook during combat. Use your hot key: "..key)
 				else
-					_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Spellbook during combat. Set and use a hot key.")
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Spellbook during combat. Set and use a hot key.")
 				end
 			else
 				_G.ToggleSpellBook(_G.BOOKTYPE_SPELL)
