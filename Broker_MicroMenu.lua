@@ -26,7 +26,7 @@ local function RGBToHex(r, g, b)
 	return ("%02x%02x%02x"):format(r*255, g*255, b*255)
 end
 
-local mb = _G.MainMenuMicroButton:GetScript("OnMouseUp")
+local mb = _G.MainMenuMicroButton and _G.MainMenuMicroButton:GetScript("OnMouseUp")
 local function mainmenu(self, ...) self.down = 1; mb(self, ...) end
 
 dataobj = ldb:NewDataObject(addonName, {
@@ -59,7 +59,7 @@ function cellPrototype:InitializeCell()
 	self.texture:SetAllPoints(self)
 end
 
-function cellPrototype:SetupCell(tooltip, value, justification, font, iconCoords, unitID,guild)
+function cellPrototype:SetupCell(tooltip, value, justification, font, iconCoords, unitID,guild,atlas)
 	local tex = self.texture
 	tex:SetWidth(16)
 	tex:SetHeight(16)
@@ -69,7 +69,11 @@ function cellPrototype:SetupCell(tooltip, value, justification, font, iconCoords
 	elseif unitID then
 		_G.SetPortraitTexture(tex, unitID)
 	else
-		tex:SetTexture(value)
+		if atlas then
+			tex:SetAtlas(value)
+		else
+			tex:SetTexture(value)
+		end
 	end
 	if iconCoords then
 		tex:SetTexCoord(_G.unpack(iconCoords))
@@ -174,57 +178,72 @@ function dataobj:OnEnter()
 	end
 	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() _G.ToggleCharacter("PaperDollFrame") end)
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."spells.tga", myProvider)
-	local key = _G.GetBindingKey("TOGGLESPELLBOOK")
-	if key then
-		tooltip:SetCell(y, 2, _G.SPELLBOOK_ABILITIES_BUTTON.."|cffffd200 ("..key..")")
-	else
-		tooltip:SetCell(y, 2, _G.SPELLBOOK_ABILITIES_BUTTON)
+	if _G.ProfessionMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, "UI-HUD-MicroMenu-".._G.ProfessionMicroButton.textureName.."-Up", myProvider,nil,nil,nil,true)
+		tooltip:SetCell(y, 2, _G.ProfessionMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.ProfessionMicroButton)
 	end
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function(self, func, button, ...)
-
-		if _G.InCombatLockdown() then
-			if key then
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Spellbook during combat. Use your hot key: "..key)
-			else
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Spellbook during combat. Set and use a hot key.")
-			end
-		else
-			_G.ToggleSpellBook(_G.BOOKTYPE_SPELL)
-		end
-	end)
 
 	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."talents.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.TalentMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function(self, func, button, ...)
-		if _G.InCombatLockdown() then
-			key = _G.GetBindingKey("TOGGLETALENTS")
-			if key then
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Talents during combat. Use your hot key: "..key)
-			else
-				_G.DEFAULT_CHAT_FRAME:AddMessage("Cant' open the Talents during combat. Set and use a hot key.")
-			end
+	if _G.PlayerSpellsMicroButton then
+		tooltip:SetCell(y, 1, path.."talents.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.PlayerSpellsMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.PlayerSpellsMicroButton)
+	else
+		tooltip:SetCell(y, 1, path.."spells.tga", myProvider)
+		local key = _G.GetBindingKey("TOGGLESPELLBOOK")
+		if key then
+			tooltip:SetCell(y, 2, _G.SPELLBOOK_ABILITIES_BUTTON.."|cffffd200 ("..key..")")
 		else
-			_G.LoadAddOn("Blizzard_TalentUI")
-			if  _G.PlayerTalentFrame:IsShown() then
-				_G.PlayerTalentFrame:Hide()
-			else
-				_G.tinsert(_G.UISpecialFrames,_G.PlayerTalentFrame:GetName());
-				_G.PlayerTalentFrame:Show()
-			end
+			tooltip:SetCell(y, 2, _G.SPELLBOOK_ABILITIES_BUTTON)
 		end
-	end)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function(self, func, button, ...)
 
-	local y, x = tooltip:AddLine()
-	if AchievementMicroButton then
+			if _G.InCombatLockdown() then
+				if key then
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Spellbook during combat. Use your hot key: "..key)
+				else
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Spellbook during combat. Set and use a hot key.")
+				end
+			else
+				_G.ToggleSpellBook(_G.BOOKTYPE_SPELL)
+			end
+		end)
+	end
+
+	if _G.TalentMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."talents.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.TalentMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function(self, func, button, ...)
+			if _G.InCombatLockdown() then
+				key = _G.GetBindingKey("TOGGLETALENTS")
+				if key then
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Talents during combat. Use your hot key: "..key)
+				else
+					_G.DEFAULT_CHAT_FRAME:AddMessage("Can't open the Talents during combat. Set and use a hot key.")
+				end
+			else
+				_G.LoadAddOn("Blizzard_TalentUI")
+				if  _G.PlayerTalentFrame:IsShown() then
+					_G.PlayerTalentFrame:Hide()
+				else
+					_G.tinsert(_G.UISpecialFrames,_G.PlayerTalentFrame:GetName());
+					_G.PlayerTalentFrame:Show()
+				end
+			end
+		end)
+	end
+
+	if _G.AchievementMicroButton then
+		local y, x = tooltip:AddLine()
 		tooltip:SetCell(y, 1, path.."achivements.tga", myProvider)
 		tooltip:SetCell(y, 2, _G.AchievementMicroButton.tooltipText)
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.AchievementMicroButton)
 	end
 
-	if QuestLogMicroButton then
+	if _G.QuestLogMicroButton then
 		local y, x = tooltip:AddLine()
 		tooltip:SetCell(y, 1, path.."quest.tga", myProvider)
 		tooltip:SetCell(y, 2, _G.QuestLogMicroButton.tooltipText)
@@ -277,26 +296,30 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.StoreMicroButton)
 	end
 
-	local y, x = tooltip:AddLine()
-	tooltip:SetCell(y, 1, path.."green.tga", myProvider)
-	tooltip:SetCell(y, 2, _G.MainMenuMicroButton.tooltipText)
-	tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, mainmenu)
+	if _G.MainMenuMicroButton and _G.ToggleGameMenu then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.MainMenuMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.ToggleGameMenu)
+	end
 
-	tooltip:AddSeparator(10,0,0,0,0)
+	if _G.GameMenuButtonSettings then
+		tooltip:AddSeparator(10,0,0,0,0)
 
-	-- Adding Buttons of Main Game Menu
-	local GameMenuButtons = {
-		_G.GameMenuButtonSettings,
-		_G.GameMenuButtonEditMode,
-		_G.GameMenuButtonMacros,
-		_G.GameMenuButtonAddons,
-	}
+		-- Adding Buttons of Main Game Menu
+		local GameMenuButtons = {
+			_G.GameMenuButtonSettings,
+			_G.GameMenuButtonEditMode,
+			_G.GameMenuButtonMacros,
+			_G.GameMenuButtonAddons,
+		}
 
-	for _, MenuButton in pairs(GameMenuButtons) do
-		if MenuButton then
-			local y, x = tooltip:AddLine()
-			tooltip:SetCell(y, 2, MenuButton:GetText())
-			tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() MenuButton:Click() end)
+		for _, MenuButton in pairs(GameMenuButtons) do
+			if MenuButton then
+				local y, x = tooltip:AddLine()
+				tooltip:SetCell(y, 2, MenuButton:GetText())
+				tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() MenuButton:Click() end)
+			end
 		end
 	end
 
