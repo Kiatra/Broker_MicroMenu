@@ -313,15 +313,15 @@ function dataobj:OnEnter()
 
 	if SettingsPanel then
 		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
-		tooltip:SetCell(y, 2, "Options")
+		tooltip:SetCell(y, 1, "Interface\\Buttons\\UI-OptionsButton", myProvider)
+		tooltip:SetCell(y, 2, OPTIONS_LABEL or OPTIONS or "Options")
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() SettingsPanel:Open() end)
 	end
 
 	if not GameMenuButtonMacros then
 		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
-		tooltip:SetCell(y, 2, "Macros")
+		tooltip:SetCell(y, 1, "Interface\\MacroFrame\\MacroFrame-Icon", myProvider)
+		tooltip:SetCell(y, 2, MACROS or "Macros")
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() 
 			if C_AddOns and C_AddOns.IsAddOnLoaded and not C_AddOns.IsAddOnLoaded("Blizzard_MacroUI") then
    				C_AddOns.LoadAddOn("Blizzard_MacroUI")
@@ -334,6 +334,8 @@ function dataobj:OnEnter()
 
     local y, x = tooltip:AddLine("")
 	local y, x = tooltip:AddLine("")
+	local y, x = tooltip:AddLine("")
+	tooltip:SetCell(y, 1, path.."green.tga", myProvider)
 	tooltip:SetCell(y, 2, string.format(L["Use %s key for Game Menu and Shop."], "|cffffd200(ESC)|r"))
 	
 	tooltip:SetAutoHideDelay(0.01, self)
