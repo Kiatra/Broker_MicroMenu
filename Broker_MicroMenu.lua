@@ -289,21 +289,7 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.RaidMicroButton)
 	end
 
-	if _G.StoreMicroButton then
-		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 1, path.."store.tga", myProvider)
-		tooltip:SetCell(y, 2, _G.StoreMicroButton.tooltipText)
-		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.StoreMicroButton)
-	end
-
-	if _G.MainMenuMicroButton and _G.ToggleGameMenu then
-		local y, x = tooltip:AddLine()
-		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
-		tooltip:SetCell(y, 2, _G.MainMenuMicroButton.tooltipText)
-		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.ToggleGameMenu)
-	end
-
-	if _G.GameMenuButtonSettings then
+	if _G.GameMenuFrame then
 		tooltip:AddSeparator(10,0,0,0,0)
 
 		-- Adding Buttons of Main Game Menu
@@ -312,17 +298,44 @@ function dataobj:OnEnter()
 			_G.GameMenuButtonEditMode,
 			_G.GameMenuButtonMacros,
 			_G.GameMenuButtonAddons,
+			GameMenuButtonOptions
 		}
 
 		for _, MenuButton in pairs(GameMenuButtons) do
 			if MenuButton then
 				local y, x = tooltip:AddLine()
+				tooltip:SetCell(y, 1, path.."green.tga", myProvider)
 				tooltip:SetCell(y, 2, MenuButton:GetText())
 				tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() MenuButton:Click() end)
 			end
 		end
 	end
 
+	if SettingsPanel then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
+		tooltip:SetCell(y, 2, "Options")
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() SettingsPanel:Open() end)
+	end
+
+	if not GameMenuButtonMacros then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."green.tga", myProvider)
+		tooltip:SetCell(y, 2, "Macros")
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() 
+			if C_AddOns and C_AddOns.IsAddOnLoaded and not C_AddOns.IsAddOnLoaded("Blizzard_MacroUI") then
+   				C_AddOns.LoadAddOn("Blizzard_MacroUI")
+			end
+			if ShowMacroFrame then
+				ShowMacroFrame()
+			end
+		 end)
+	end
+
+    local y, x = tooltip:AddLine("")
+	local y, x = tooltip:AddLine("")
+	tooltip:SetCell(y, 2, string.format(L["Use %s key for Game Menu and Shop."], "|cffffd200(ESC)|r"))
+	
 	tooltip:SetAutoHideDelay(0.01, self)
 	tooltip:SmartAnchorTo(self)
 	tooltip:Show()
