@@ -3,6 +3,7 @@
 ## Interface-Classic: @toc-version-classic@
 ## Interface-BCC: @toc-version-bcc@
 ## Interface-Wrath: @toc-version-wrath@
+## Interface-Mists: @toc-version-mists@
 ## Title: Broker: |cff00ff00MicroMenu|r
 ## Version: @project-version@
 ## Notes: Shows the micro menu and game menu in a clickable broker tooltip.
