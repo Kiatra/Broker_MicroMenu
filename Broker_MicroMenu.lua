@@ -250,6 +250,13 @@ function dataobj:OnEnter()
 		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.QuestLogMicroButton)
 	end
 
+	if _G.HousingMicroButton then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, path.."quest.tga", myProvider)
+		tooltip:SetCell(y, 2, _G.HousingMicroButton.tooltipText)
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, _G.HousingMicroButton)
+	end
+
 	if _G.GuildMicroButton then
 		local y, x = tooltip:AddLine()
 		tooltip:SetCell(y, 1, "", myProvider, nil,"player",true)
@@ -332,6 +339,20 @@ function dataobj:OnEnter()
 		 end)
 	end
 
+	if LE_EXPANSION_LEVEL_CURRENT > 10 then
+		local y, x = tooltip:AddLine()
+		tooltip:SetCell(y, 1, "|A:ClickCast-Icon-Mouse:16:16|a")
+		tooltip:SetCell(y, 2, "Click Cast")
+		tooltip:SetLineScript(y, "OnMouseUp", MouseHandler, function() 
+			if C_AddOns and C_AddOns.IsAddOnLoaded and not C_AddOns.IsAddOnLoaded("Blizzard_ClickBindingUI") then
+   				C_AddOns.LoadAddOn("Blizzard_ClickBindingUI")
+			end
+			if ClickBindingFrame then
+				ClickBindingFrame:Show()
+			end
+		end)
+	end
+
     local y, x = tooltip:AddLine("")
 	local y, x = tooltip:AddLine("")
 	local y, x = tooltip:AddLine("")
@@ -342,6 +363,16 @@ function dataobj:OnEnter()
 	tooltip:SmartAnchorTo(self)
 	tooltip:Show()
 end
+
+local f = CreateFrame("Frame", nil, UIParent)
+f:SetSize(64, 64)
+f:SetPoint("CENTER")
+
+local tex = f:CreateTexture()
+tex:SetAllPoints()
+
+-- This uses the same sub-texture as ClickBindingFramePortrait
+tex:SetAtlas("ClickCast-Icon-Mouse", true) 
 
 function dataobj:SetDB(database)
 	db = database
