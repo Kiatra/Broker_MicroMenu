@@ -364,16 +364,6 @@ function dataobj:OnEnter()
 	tooltip:Show()
 end
 
-local f = CreateFrame("Frame", nil, UIParent)
-f:SetSize(64, 64)
-f:SetPoint("CENTER")
-
-local tex = f:CreateTexture()
-tex:SetAllPoints()
-
--- This uses the same sub-texture as ClickBindingFramePortrait
-tex:SetAtlas("ClickCast-Icon-Mouse", true) 
-
 function dataobj:SetDB(database)
 	db = database
 end
